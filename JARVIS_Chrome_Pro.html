@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#06101e"><title>JARVIS X — Web AI Assistant</title>
+<style>
+:root{--bg:#06101e;--panel:#0c1b2d;--line:#20415b;--cyan:#55d9ff;--blue:#397fe0;--text:#eaf6ff;--muted:#9ab0c3;--green:#55e0ae;--red:#ff8292}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 50% -15%,#16476a 0,#08182a 42%,#040a12 100%);font-family:system-ui,Arial;color:var(--text);min-height:100vh}
+.app{max-width:1040px;margin:auto;padding:16px 14px 35px}.top{display:flex;justify-content:space-between;align-items:center;gap:8px;color:var(--cyan);font-size:12px;letter-spacing:2px;font-weight:800}.chip{border:1px solid var(--line);border-radius:99px;padding:6px 9px;color:var(--muted);letter-spacing:0;font-weight:500}
+.hero{text-align:center;padding:22px 0 18px}.orb{width:140px;height:140px;margin:8px auto 20px;border-radius:50%;display:grid;place-items:center;position:relative;background:radial-gradient(circle at 45% 40%,#358fbd,#103958 48%,#071526 75%);border:1px solid #5bdcff;box-shadow:0 0 34px #30c9ff88,inset 0 0 30px #54dfff55;transition:.25s}.orb:before,.orb:after{content:"";position:absolute;width:170px;height:170px;border:1px solid #55d9ff88;border-radius:50%;animation:spin 13s linear infinite}.orb:after{width:190px;height:190px;border-style:dashed;animation-direction:reverse;animation-duration:22s}.orb.active{box-shadow:0 0 60px #3bd5ff;transform:scale(1.04)}.orb b{font-size:43px;font-weight:300;letter-spacing:5px;text-shadow:0 0 16px var(--cyan)}@keyframes spin{to{transform:rotate(360deg)}}
+h1{font-size:27px;letter-spacing:7px;margin:0}.subtitle{font-size:11px;color:var(--muted);letter-spacing:2px;margin-top:6px}.status{color:var(--cyan);font-size:13px;min-height:20px;margin:14px auto 12px;max-width:700px}.actions{display:flex;justify-content:center;gap:8px;flex-wrap:wrap}.btn{border:1px solid #2a6686;background:linear-gradient(135deg,#123650,#10263d);color:var(--text);border-radius:12px;padding:11px 14px;font-weight:700;font-size:12px}.primary{background:linear-gradient(135deg,#147eaf,#285fbd);border-color:var(--cyan)}.danger{border-color:#81404f;background:#351d2b}.grid{display:grid;grid-template-columns:1.25fr .75fr;gap:12px;margin-top:13px}.panel{background:#0b1b2ceF;border:1px solid var(--line);border-radius:17px;padding:14px;min-width:0}.panel h2{font-size:12px;letter-spacing:1.4px;color:var(--cyan);margin:0 0 11px}.chat{height:300px;overflow:auto;display:flex;flex-direction:column;gap:9px}.msg{max-width:95%;padding:10px 12px;border-radius:12px;font-size:13px;line-height:1.5;white-space:pre-wrap;overflow-wrap:anywhere}.bot{background:#112b40;border:1px solid #1c4a63;align-self:flex-start}.user{background:#17456a;border:1px solid #28658e;align-self:flex-end}.msg small{display:block;color:#8db3ca;font-size:10px;margin-bottom:4px}.compose{display:flex;gap:7px;margin-top:10px}.compose input,.field input,.field select{width:100%;min-width:0;background:#061321;border:1px solid var(--line);border-radius:10px;padding:11px;color:var(--text);font-size:13px}.compose input{flex:1}.quick{display:grid;grid-template-columns:1fr 1fr;gap:7px}.quick button{background:#0c2338;border:1px solid #1b425c;color:#d8efff;border-radius:10px;padding:10px 7px;text-align:left;font-size:12px}.field{display:grid;gap:6px;margin-top:9px}.field label{font-size:11px;color:var(--muted)}.note{font-size:11px;color:var(--muted);line-height:1.5;margin-top:10px}.row{display:flex;gap:8px;flex-wrap:wrap}.row .btn{flex:1}.good{color:var(--green)}.bad{color:var(--red)}.tag{display:inline-block;border:1px solid #28506b;border-radius:99px;padding:4px 8px;color:#9dddf3;font-size:10px;margin:3px}.footer{text-align:center;color:#718ba1;font-size:10px;margin-top:17px}
+@media(max-width:680px){.grid{grid-template-columns:1fr}.chat{height:250px}.hero{padding-top:17px}}
+</style></head>
+<body><main class="app">
+<header class="top"><span>◈ J.A.R.V.I.S X / CORE</span><span class="chip" id="clock">SYSTEM READY</span></header>
+<section class="hero"><div class="orb" id="orb"><b>J</b></div><h1>JARVIS X</h1><div class="subtitle">PERSONAL INTELLIGENCE · BROWSER CONTROL INTERFACE</div><div class="status" id="status">Ready. First run the microphone check.</div>
+<div class="actions"><button class="btn primary" id="mic">🎙 START VOICE</button><button class="btn" id="checkMic">🔐 CHECK MIC</button><button class="btn danger" id="stop">■ STOP</button><button class="btn" id="voiceToggle">🔊 VOICE ON</button></div>
+<div><span class="tag">VOICE INPUT</span><span class="tag">SPOKEN OUTPUT</span><span class="tag">WEB ACTIONS</span><span class="tag">AI CONNECTOR</span></div></section>
+<div class="grid">
+<section class="panel"><h2>◉ LIVE CONVERSATION</h2><div class="chat" id="chat"><div class="msg bot"><small>JARVIS</small>Online. I can open supported websites, search the web, calculate, tell the time, check weather, and prepare calls/messages for you to review.</div></div><form class="compose" id="form"><input id="command" autocomplete="off" placeholder="Ask anything or enter a command…"><button class="btn primary">SEND</button></form><div class="note">Voice examples: “Jarvis, open YouTube”, “weather in Varanasi”, “call 9876543210”, “WhatsApp 919876543210 saying Hello”.</div></section>
+<aside class="panel"><h2>⚡ QUICK ACTIONS</h2><div class="quick">
+<button data-cmd="open YouTube">▶ YouTube</button><button data-cmd="open WhatsApp">◉ WhatsApp</button><button data-cmd="open Gmail">✉ Gmail</button><button data-cmd="open Maps">⌖ Maps</button><button data-cmd="what time is it">◷ Time</button><button data-cmd="weather in Varanasi">☁ Weather</button><button data-cmd="search for AI news today">⌕ AI news</button><button data-cmd="tell me a joke">☺ Joke</button><button data-cmd="calculate 125 * 48">∑ Calculator</button><button data-cmd="open ChatGPT">✧ ChatGPT</button>
+</div>
+<h2 style="margin-top:18px">◇ AI MODEL CONNECTION</h2><div class="note">No hosted, unlimited free AI is embedded. Built-in commands work without a key. You can connect an OpenAI-compatible provider, but it may require an account/key and may charge. Avoid entering a secret key on a public/shared device.</div>
+<div class="field"><label>API endpoint</label><input id="apiUrl" placeholder="https://provider.example/v1/chat/completions"></div><div class="field"><label>Model ID</label><input id="model" placeholder="model-name"></div><div class="field"><label>API key (session only)</label><input id="apiKey" type="password" placeholder="Optional"></div><button class="btn" id="saveAI" style="margin-top:9px">CONNECT AI FOR THIS SESSION</button>
+<h2 style="margin-top:18px">▣ BROWSER DIAGNOSTICS</h2><div class="note" id="diagnostics">Checking browser capabilities…</div>
+</aside></div><div class="footer">JARVIS X · Browser-only assistant · Microphone requires HTTPS or localhost in supported browsers</div>
+</main>
+<script>
+(()=>{
+const $=id=>document.getElementById(id),chat=$('chat'),status=$('status'),orb=$('orb');
+const SR=window.SpeechRecognition||window.webkitSpeechRecognition;let recognition=null,voice=true,mediaStream=null,aiConnected=false;
+function add(t,who='bot'){const d=document.createElement('div');d.className='msg '+who;const s=document.createElement('small');s.textContent=who==='bot'?'JARVIS':'YOU';const b=document.createElement('div');b.textContent=t;d.append(s,b);chat.append(d);chat.scrollTop=chat.scrollHeight}
+function say(t){add(t);status.textContent=t.slice(0,110);if(voice&&'speechSynthesis'in window){speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(t);u.rate=1;u.pitch=.95;speechSynthesis.speak(u)}}
+function setActive(v){orb.classList.toggle('active',v)}
+function stop(){try{recognition?.stop()}catch(e){}if(mediaStream){mediaStream.getTracks().forEach(t=>t.stop());mediaStream=null}setActive(false);status.textContent='Stopped. Tap START VOICE when ready.'}
+async function checkMic(){if(!navigator.mediaDevices?.getUserMedia){say('This page cannot access the microphone. Open it from a secure HTTPS website in Chrome, not directly as a downloaded file.');return false}
+try{mediaStream=await navigator.mediaDevices.getUserMedia({audio:true});mediaStream.getTracks().forEach(t=>t.stop());mediaStream=null;say('Microphone permission works. Now tap START VOICE.');return true}catch(e){say('Microphone permission failed: '+e.name+'. In Chrome, tap the site icon beside the address, open Permissions, allow Microphone, then reload.');return false}}
+function openUrl(url){const w=window.open(url,'_blank');if(!w)say('Chrome blocked the new tab. Allow pop-ups for this page or tap the link again.')}
+function search(q){openUrl('https://www.google.com/search?q='+encodeURIComponent(q))}
+async function weather(city){try{const r=await fetch('https://wttr.in/'+encodeURIComponent(city)+'?format=j1');if(!r.ok)throw Error();const j=await r.json(),c=j.current_condition[0];say('Weather in '+city+': '+c.weatherDesc[0].value+', '+c.temp_C+' degrees Celsius, feels like '+c.FeelsLikeC+' degrees. Humidity '+c.humidity+' percent.')}catch(e){say('Weather is unavailable right now. Please try again later.')}}
+async function askAI(q){const url=$('apiUrl').value.trim(),key=$('apiKey').value.trim(),model=$('model').value.trim();if(!url||!key||!model)return false;try{const r=await fetch(url,{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+key},body:JSON.stringify({model,messages:[{role:'system',content:'You are JARVIS, a concise, accurate personal assistant. Give practical answers.'},{role:'user',content:q}],max_tokens:500})});if(!r.ok)throw Error('HTTP '+r.status);const j=await r.json();say(j.choices?.[0]?.message?.content||'The AI service returned no text.');return true}catch(e){say('AI connection error: '+e.message+'. The provider may block browser requests (CORS).');return true}}
+function calc(q){const m=q.match(/(?:calculate|what is|solve)\s+([0-9+\-*/(). %]+)$/i);if(!m||!/^[0-9+\-*/(). %]+$/.test(m[1]))return null;try{const v=Function('"use strict";return ('+m[1]+')')();return Number.isFinite(v)?m[1]+' = '+v:null}catch(e){return null}}
+async function run(raw){let q=raw.toLowerCase().trim().replace(/^hey\s+jarvis[,\s]*/,'').replace(/^jarvis[,\s]*/,'');if(!q){say('Yes?');return}
+if(/^(stop|stop listening|goodbye|shut down)$/.test(q)){stop();say('JARVIS signing off.');return}
+if(q.includes('time')){say('It is '+new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'}));return}
+if(q.includes('date')||q.includes('today')){say('Today is '+new Date().toLocaleDateString([],{weekday:'long',year:'numeric',month:'long',day:'numeric'}));return}
+if(q.includes('weather')){await weather(q.match(/\bin\s+(.+)/)?.[1]||'Varanasi');return}
+if(q.startsWith('open ')){const n=q.slice(5).trim(),sites={youtube:'https://youtube.com',google:'https://google.com',gmail:'https://mail.google.com',whatsapp:'https://wa.me/',instagram:'https://instagram.com',facebook:'https://facebook.com',maps:'https://maps.google.com',chatgpt:'https://chatgpt.com',github:'https://github.com'};say('Opening '+n+'.');openUrl(sites[n]||'https://www.google.com/search?q='+encodeURIComponent('open '+n));return}
+if(q.startsWith('search ')||q.startsWith('search for ')){const v=q.replace(/^search(?:\s+for)?\s+/,'');say('Searching for '+v);search(v);return}
+if(q.startsWith('play ')){const v=q.slice(5);say('Searching YouTube for '+v);openUrl('https://youtube.com/results?search_query='+encodeURIComponent(v));return}
+if(q.includes('joke')){say(['Why do programmers prefer dark mode? Because light attracts bugs.','There are 10 kinds of people: those who understand binary and those who do not.','A SQL query walks into a bar and asks: can I join you?'][Math.floor(Math.random()*3)]);return}
+if(q.includes('who are you')){say('I am JARVIS X, your browser-based assistant.');return}
+if(q.startsWith('call ')){const n=q.slice(5).replace(/[^\d+]/g,'');if(!n){say('Please provide a phone number.');return}say('Opening the phone dialer. Review and confirm the call.');openUrl('tel:'+n);return}
+if(q.startsWith('text ')||q.startsWith('sms ')){const m=q.match(/^(?:text|sms)\s+([+\d]+)\s+saying\s+(.+)$/);if(!m){say('Try: text 9876543210 saying Hello');return}say('Opening SMS. Review the message and tap Send.');openUrl('sms:'+m[1]+'?body='+encodeURIComponent(m[2]));return}
+if(q.startsWith('whatsapp ')){const m=q.match(/^whatsapp\s+(\d+)\s+saying\s+(.+)$/);if(!m){say('Try: WhatsApp 919876543210 saying Hello. Include country code.');return}say('Opening WhatsApp with your message ready. Review and tap Send.');openUrl('https://wa.me/'+m[1]+'?text='+encodeURIComponent(m[2]));return}
+if(q.includes('flashlight')||q.includes('torch')){say('Chrome cannot reliably control the Android flashlight. Use Quick Settings to switch it on or off.');return}
+const result=calc(q);if(result){say(result);return}
+if(await askAI(raw))return;
+say('I can run built-in commands, but this browser page has no built-in generative AI model. Connect a compatible AI provider or I can search the web.');search(raw)}
+function start(){if(!SR){say('Chrome speech recognition is not available in this browser context. Try serving this page over HTTPS in Chrome. You can still type commands.');return}
+try{recognition?.abort()}catch(e){}recognition=new SR();recognition.lang='en-IN';recognition.continuous=false;recognition.interimResults=true;recognition.maxAlternatives=1;
+recognition.onstart=()=>{setActive(true);status.textContent='Listening… speak now.'};
+recognition.onresult=e=>{let interim='',final='';for(let i=e.resultIndex;i<e.results.length;i++){if(e.results[i].isFinal)final+=e.results[i][0].transcript;else interim+=e.results[i][0].transcript}if(interim)status.textContent='Hearing: '+interim;if(final){add(final,'user');run(final)}};
+recognition.onerror=e=>{setActive(false);status.textContent='Voice error: '+e.error+'. Check site microphone permission and HTTPS.'};
+recognition.onend=()=>setActive(false);
+try{recognition.start()}catch(e){say('Could not start voice recognition. Tap once more, or reload the page.')}}
+$('mic').onclick=start;$('checkMic').onclick=checkMic;$('stop').onclick=stop;
+$('voiceToggle').onclick=()=>{voice=!voice;$('voiceToggle').textContent=voice?'🔊 VOICE ON':'🔇 VOICE OFF';if(!voice)speechSynthesis.cancel()};
+$('form').onsubmit=e=>{e.preventDefault();const v=$('command').value.trim();if(v){$('command').value='';add(v,'user');run(v)}};
+document.querySelectorAll('[data-cmd]').forEach(b=>b.onclick=()=>{add(b.dataset.cmd,'user');run(b.dataset.cmd)});
+$('saveAI').onclick=()=>say('AI settings entered for this page session. This demo does not save your key to a server. Never use a secret key on a shared device.');
+$('clock').textContent='LOCAL '+new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
+const secure=window.isSecureContext,diag=[];diag.push('Secure context: '+(secure?'YES':'NO — microphone APIs may be blocked'));diag.push('Speech recognition: '+(SR?'available':'not detected'));diag.push('Microphone API: '+(navigator.mediaDevices?.getUserMedia?'available':'not available'));$('diagnostics').textContent=diag.join(' · ');
+if(!secure)status.textContent='Microphone likely blocked because this file is not hosted on HTTPS. Use the secure-hosting steps.';
+})();
+</script></body></html>
